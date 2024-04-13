@@ -1,0 +1,16 @@
+[
+  {
+    "email": "test1@test.com",
+    "username": "test1",
+    "favourite_restaurants": [],
+    "password": "$2b$10$1pHS60qlIQq8vMwSGHxrhOZTYlcofG9AB2AXpFUjuiqmdST0rpJPy",
+    "id": 1
+  },
+  {
+    "email": "test2@test.com",
+    "username": "test2",
+    "favourite_restaurants": [],
+    "password": "$2b$10$CPziHca0VOjEpmUHXeit4.pswa3yZmcniUdyFppQiDZEqhj3KVj62",
+    "id": 2
+  }
+]
