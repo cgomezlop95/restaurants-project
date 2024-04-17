@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const createError = require("http-errors");
 require("./config/passport");
+require("./config/cloudinary");
 
 const whitelist = ["http://localhost:3000"];
 

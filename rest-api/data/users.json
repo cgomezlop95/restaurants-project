@@ -12,5 +12,19 @@
     "favourite_restaurants": [],
     "password": "$2b$10$CPziHca0VOjEpmUHXeit4.pswa3yZmcniUdyFppQiDZEqhj3KVj62",
     "id": 2
+  },
+  {
+    "email": "test3@test.com",
+    "username": "test3",
+    "favourite_restaurants": [],
+    "password": "$2b$10$21c6GRJmJs8maGpQGRyLveGBCNVUepmMcW1xPHeXyqFOUWBAXRRvG",
+    "id": 3
+  },
+  {
+    "email": "test4@test.com",
+    "username": "test4",
+    "favourite_restaurants": [],
+    "password": "$2b$10$GPx5chE28jMyY9ayXUSm0uMkeQ3uoEvrC/C2I2BtPCBeIV1DmA39K",
+    "id": 4
   }
 ]

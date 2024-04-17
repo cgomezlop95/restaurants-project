@@ -16,6 +16,16 @@ router.get("/", (req, res) => {
   res.send(users);
 });
 
+router.get("/logout", (req, res) => {
+  try {
+    res.clearCookie("token", cookieSettings).send("Cookie is cleared");
+    console.log("User logged out successfully");
+  } catch (error) {
+    console.error("Error during logout:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const data = await fs.readFile("./data/users.json", "utf8");
@@ -108,15 +118,5 @@ router.get(
     }
   }
 );
-
-router.get("/logout", (req, res) => {
-  try {
-    res.clearCookie("token", cookieSettings).send("Cookie is cleared");
-    console.log("User logged out successfully");
-  } catch (error) {
-    console.error("Error during logout:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
 
 module.exports = router;

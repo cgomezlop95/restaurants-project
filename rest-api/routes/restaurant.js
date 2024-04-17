@@ -3,8 +3,18 @@ const router = express.Router();
 const restaurants = require("../data/restaurants.json");
 const fs = require("fs").promises;
 
+const cloudinary = require("../config/cloudinary");
+const upload = require("../config/multer");
+
+async function handleUpload(file) {
+  const res = await cloudinary.uploader.upload(file, {
+    resource_type: "auto",
+  });
+  return res;
+}
+
 router.get("/", (req, res) => {
-  res.send(restaurants);
+  res.json(restaurants);
 });
 
 router.get("/:id", async (req, res) => {
@@ -25,7 +35,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create", upload.single("image"), async (req, res) => {
   try {
     const data = await fs.readFile("./data/restaurants.json", "utf8");
     const restaurants = JSON.parse(data);
@@ -37,11 +47,17 @@ router.post("/create", async (req, res) => {
           ) + 1
         : 1;
 
+    const b64 = Buffer.from(req.file.buffer).toString("base64");
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+    const cldRes = await handleUpload(dataURI);
+
+    console.log("req.file", req.file);
+
     const restaurant_data = {
       name: req.body.name,
       id: newId,
       address: req.body.address,
-      image: req.body.image || "url pending",
+      image: cldRes.secure_url || "url pending",
       cuisine_type: req.body.cuisine_type,
       reviews: [],
     };
