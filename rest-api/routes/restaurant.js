@@ -57,6 +57,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
       name: req.body.name,
       id: newId,
       address: req.body.address,
+      latlng: req.body.latlng,
       image: cldRes.secure_url || "url pending",
       cuisine_type: req.body.cuisine_type,
       reviews: [],

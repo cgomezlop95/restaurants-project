@@ -3,8 +3,12 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { postRestaurant } from "@/app/service/restaurants";
+import mapboxgl from "mapbox-gl";
 
-export default function SignIn() {
+const access_token = (mapboxgl.accessToken =
+  process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN);
+
+export default function CreateMap() {
   const {
     register,
     control,
@@ -42,12 +46,29 @@ export default function SignIn() {
   });
 
   const onSubmit = async (data) => {
-    if (data.image) {
-      console.log("data with image", { ...data, image: data.image[0] });
-      mutate({ ...data, image: data.image[0] });
-    } else {
-      console.log("data", data);
-      console.error("Image is required");
+    const urlAddress = encodeURIComponent(data.address);
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${urlAddress}.json?access_token=${access_token}`;
+
+    try {
+      const response = await fetch(url);
+      const geo_data = await response.json();
+
+      if (geo_data.features && geo_data.features.length > 0) {
+        const [longitude, latitude] = geo_data.features[0].geometry.coordinates;
+        mutate({
+          ...data,
+          image: data.image[0],
+          latlng: {
+            lat: latitude,
+            lng: longitude,
+          },
+        });
+        console.log("Coordinates:", longitude, latitude);
+      } else {
+        console.log("No results found");
+      }
+    } catch (error) {
+      console.error("Error during geocoding:", error);
     }
   };
 
@@ -89,6 +110,7 @@ export default function SignIn() {
               id="imageInput"
               onChange={handleChange}
               style={{ visibility: "hidden" }}
+              required
             />
           </div>
 
@@ -128,8 +150,8 @@ export default function SignIn() {
         </form>
       )}
 
-      {isSuccess && <div>Restaurante guardado</div>}
-      {isError && <p>Ups, algo salió mal</p>}
+      {isSuccess && <div>Restaurante guardado - Ver restaurante</div>}
+      {isError && <p>Ups, algo salió mal - Volver</p>}
     </main>
   );
 }

@@ -10,7 +10,13 @@ const getRestaurantById = async (id) => {
   return data;
 };
 
-const postRestaurant = async ({ name, address, cuisine_type, image }) => {
+const postRestaurant = async ({
+  name,
+  address,
+  cuisine_type,
+  image,
+  latlng,
+}) => {
   const { data } = await api.post(
     "/api/restaurant/create",
     {
@@ -18,6 +24,7 @@ const postRestaurant = async ({ name, address, cuisine_type, image }) => {
       address,
       cuisine_type,
       image,
+      latlng,
     },
     {
       headers: {
