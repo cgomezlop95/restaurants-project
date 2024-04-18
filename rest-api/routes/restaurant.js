@@ -76,7 +76,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   try {
     const data = await fs.readFile("./data/restaurants.json", "utf8");
     const restaurants = JSON.parse(data);
@@ -86,11 +86,7 @@ router.put("/:id", async (req, res) => {
       if (restaurant.id === restaurant_id) {
         return {
           ...restaurant,
-          name: req.body.name || restaurant.name,
-          address: req.body.address || restaurant.address,
-          image: req.body.image || restaurant.image,
-          cuisine_type: req.body.cuisine_type || restaurant.cuisine_type,
-          reviews: restaurant.reviews,
+          reviews: [...restaurant.reviews, req.body.review_data],
         };
       }
 

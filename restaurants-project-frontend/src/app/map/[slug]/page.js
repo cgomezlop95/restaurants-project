@@ -1,6 +1,10 @@
 "use client";
+import ReviewForm from "@/app/components/ReviewForm";
 import { getRestaurantById } from "@/app/service/restaurants";
 import { useQuery } from "@tanstack/react-query";
+import Rating from "@mui/material/Rating";
+import BlueIcon from "../../components/BlueIcon";
+import EmptyIcon from "../../components/EmptyIcon";
 
 export default function Page({ params }) {
   const id = params.slug;
@@ -32,15 +36,21 @@ export default function Page({ params }) {
       <div className="flex flex-row gap-4">
         <p>{data.cuisine_type}</p>
         <h3>Escribe tu comentario sobre el restaurante</h3>
+        <ReviewForm id={id} />
       </div>
 
       <div>
-        {data.reviews.map((review) => {
+        {data.reviews.map((review, index) => {
           return (
-            <div className="border-b-2 border-blue">
-              <p>{review.name}</p>
+            <div className="border-b-2 border-blue" key={index}>
+              <p className="font-bold">{review.name}</p>
               <p>{review.comments}</p>
-              <p>{review.rating}</p>
+              <Rating
+                name="rating"
+                defaultValue={review.rating}
+                icon={<BlueIcon fontSize="inherit" />}
+                emptyIcon={<EmptyIcon fontSize="inherit" />}
+              />
             </div>
           );
         })}

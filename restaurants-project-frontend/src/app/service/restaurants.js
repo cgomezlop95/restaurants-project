@@ -35,4 +35,17 @@ const postRestaurant = async ({
   return data;
 };
 
-export { getRestaurants, getRestaurantById, postRestaurant };
+const addReview = async (id, review_data) => {
+  try {
+    const { data } = await api.put(`/api/restaurant/update/${id}`, {
+      review_data,
+    });
+    console.log("Review added successfully:", data);
+    return data;
+  } catch (error) {
+    console.error("Error adding review:", error);
+    throw error;
+  }
+};
+
+export { getRestaurants, getRestaurantById, postRestaurant, addReview };
