@@ -10,7 +10,10 @@ const createError = require("http-errors");
 require("./config/passport");
 require("./config/cloudinary");
 
-const whitelist = ["http://localhost:3000"];
+const whitelist = [
+  "http://localhost:3000",
+  "https://restaurants-project-map.vercel.app/",
+];
 
 const corsOptions = {
   origin: function (origin, callback) {
