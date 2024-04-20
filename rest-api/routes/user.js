@@ -26,6 +26,20 @@ router.get("/logout", (req, res) => {
   }
 });
 
+router.get(
+  "/logged-in",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    try {
+      console.log("Authenticated user:", req.user);
+      res.json({ user: req.user });
+    } catch (error) {
+      console.error("Error when trying to fetch authenticated user:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
+
 router.get("/:id", async (req, res) => {
   try {
     const data = await fs.readFile("./data/users.json", "utf8");
@@ -104,19 +118,5 @@ router.post("/login", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-router.get(
-  "/logged-in",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    try {
-      console.log("Authenticated user:", req.user);
-      res.json({ user: req.user });
-    } catch (error) {
-      console.error("Error when trying to fetch authenticated user:", error);
-      res.status(500).send("Internal Server Error");
-    }
-  }
-);
 
 module.exports = router;

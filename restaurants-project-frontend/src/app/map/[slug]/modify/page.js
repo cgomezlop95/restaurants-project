@@ -1,14 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
-import { postRestaurant } from "@/app/service/restaurants";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getRestaurantById, modifyRestaurant } from "@/app/service/restaurants";
 import mapboxgl from "mapbox-gl";
 
 const access_token = (mapboxgl.accessToken =
   process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN);
 
-export default function CreateMap() {
+export default function ModifyMap({ params }) {
+  const id = params.slug;
+  console.log("id", id);
+
   const {
     register,
     control,
@@ -18,7 +21,22 @@ export default function CreateMap() {
     formState: { errors },
   } = useForm();
 
-  const [imagePreview, setImagePreview] = useState(null);
+  const { data: current_data, isLoading } = useQuery({
+    queryKey: ["restaurant", id],
+    queryFn: () => getRestaurantById(id),
+  });
+
+  console.log("data", current_data);
+
+  const [imagePreview, setImagePreview] = useState();
+
+  useEffect(() => {
+    if (current_data?.image) {
+      console.log("current data image", current_data.image);
+      setImagePreview(current_data.image);
+      setValue("image", current_data.image);
+    }
+  }, [current_data]);
 
   const handleChange = (event) => {
     const file = event.target.files[0];
@@ -41,8 +59,12 @@ export default function CreateMap() {
   };
 
   const { mutate, isSuccess, isError } = useMutation({
-    mutationKey: "create",
-    mutationFn: postRestaurant,
+    mutationKey: ["modify-details", id],
+    mutationFn: (updated_data) => modifyRestaurant(id, updated_data),
+    onSuccess: () => {
+      console.log("mutation success");
+    },
+    onError: () => console.error(errors),
   });
 
   const onSubmit = async (data) => {
@@ -55,15 +77,18 @@ export default function CreateMap() {
 
       if (geo_data.features && geo_data.features.length > 0) {
         const [longitude, latitude] = geo_data.features[0].geometry.coordinates;
-        mutate({
+        const updated_data = {
           ...data,
           image: data.image[0],
+          // image: imagePreview,
           latlng: {
             lat: latitude,
             lng: longitude,
           },
-        });
-        console.log({
+        };
+        mutate(updated_data);
+        console.log("updated data", updated_data);
+        console.log("final mutation data", {
           ...data,
           image: data.image[0],
           latlng: {
@@ -79,6 +104,10 @@ export default function CreateMap() {
       console.error("Error during geocoding:", error);
     }
   };
+
+  if (isLoading) {
+    return <p>Loading</p>;
+  }
 
   return (
     <main className="flex min-h-screen flex-row gap-10 p-10 items-end">
@@ -118,7 +147,6 @@ export default function CreateMap() {
               id="imageInput"
               onChange={handleChange}
               style={{ visibility: "hidden" }}
-              required
             />
           </div>
 
@@ -127,7 +155,7 @@ export default function CreateMap() {
               <label className="font-bold">Nombre de restaurante:</label>
               <input
                 type="text"
-                placeholder="Nombre del restaurante"
+                defaultValue={current_data.name}
                 {...register("name")}
                 className="border-white border-2 rounded px-3 py-2"
               />
@@ -136,7 +164,7 @@ export default function CreateMap() {
               <label className="font-bold">Dirección de restaurante:</label>
               <input
                 type="text"
-                placeholder="Dirección"
+                defaultValue={current_data.address}
                 {...register("address")}
                 className="border-white border-2 rounded px-3 py-2"
               />
@@ -145,20 +173,20 @@ export default function CreateMap() {
               <label className="font-bold">Descripción del restaurante:</label>
               <textarea
                 {...register("cuisine_type")}
-                placeholder="Escribe información acerca del restaurante"
+                defaultValue={current_data.cuisine_type}
               />
             </div>
             <button
               type="submit"
               className="border-white border-2 bg-transparent py-2 px-4 rounded text-left w-40"
             >
-              Guardar
+              Modificar
             </button>
           </div>
         </form>
       )}
 
-      {isSuccess && <div>Restaurante guardado - Ver restaurante</div>}
+      {isSuccess && <div>Restaurante modificado - Ver restaurante</div>}
       {isError && <p>Ups, algo salió mal - Volver</p>}
     </main>
   );

@@ -6,10 +6,13 @@ import BlueIcon from "./BlueIcon";
 import EmptyIcon from "./EmptyIcon";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../hooks/useAuth";
 
 const ReviewForm = ({ id }) => {
   const [rating, setRating] = useState(0);
   const router = useRouter();
+  let auth = useAuth();
+  console.log("auth current user", auth.currentUser.username);
 
   const {
     register,
@@ -50,7 +53,7 @@ const ReviewForm = ({ id }) => {
       const formattedDate = `${day} de ${month} de ${year}`;
 
       const review_data = {
-        name: "user name to be updated",
+        name: auth.currentUser.username || "anónimo",
         date: formattedDate,
         ...data,
         rating,
@@ -83,10 +86,9 @@ const ReviewForm = ({ id }) => {
           emptyIcon={<EmptyIcon fontSize="inherit" />}
         />
 
-        <input
-          type="text"
-          placeholder="Escribe tu comentario sobre el restaurante"
+        <textarea
           {...register("comments", { required: true })}
+          placeholder="Escribe tu comentario sobre el restaurante"
         />
 
         <button type="submit">Enviar</button>

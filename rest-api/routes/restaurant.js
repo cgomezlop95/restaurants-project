@@ -76,7 +76,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
   }
 });
 
-router.put("/update/:id", async (req, res) => {
+router.put("/update/review/:id", async (req, res) => {
   try {
     const data = await fs.readFile("./data/restaurants.json", "utf8");
     const restaurants = JSON.parse(data);
@@ -104,7 +104,45 @@ router.put("/update/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.put("/update/details/:id", upload.single("image"), async (req, res) => {
+  try {
+    const data = await fs.readFile("./data/restaurants.json", "utf8");
+    const restaurants = JSON.parse(data);
+    const restaurant_id = parseInt(req.params.id, 10);
+    console.log("req.body", req.body);
+    console.log("req.file", req.file);
+    const b64 = Buffer.from(req.file.buffer).toString("base64");
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+    const cldRes = await handleUpload(dataURI);
+
+    const updated_restaurants = restaurants.map((restaurant) => {
+      if (restaurant.id === restaurant_id) {
+        console.log("entra en la modificación");
+        return {
+          ...restaurant,
+          name: req.body.name,
+          address: req.body.address,
+          cuisine_type: req.body.cuisine_type,
+          image: cldRes.secure_url || "url pending",
+          latlng: req.body.latlng,
+        };
+      }
+
+      return restaurant;
+    });
+
+    await fs.writeFile(
+      "./data/restaurants.json",
+      JSON.stringify(updated_restaurants)
+    );
+    res.status(200).json(updated_restaurants);
+  } catch (error) {
+    console.error("Error updating restaurant:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.delete("/delete/:id", async (req, res) => {
   try {
     const data = await fs.readFile("./data/restaurants.json", "utf8");
     const restaurants = JSON.parse(data);
