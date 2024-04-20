@@ -12,8 +12,8 @@ require("./config/cloudinary");
 
 const whitelist = [
   "http://localhost:3000",
-  "http://restaurants-project-map.vercel.app/",
-  "https://restaurants-project-map.vercel.app/",
+  "http://restaurants-project-map.vercel.app",
+  "https://restaurants-project-map.vercel.app",
 ];
 
 const corsOptions = {
