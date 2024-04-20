@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { postRestaurant } from "@/app/service/restaurants";
 import mapboxgl from "mapbox-gl";
+import Link from "next/link";
 
 const access_token = (mapboxgl.accessToken =
   process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN);
@@ -63,17 +64,8 @@ export default function CreateMap() {
             lng: longitude,
           },
         });
-        console.log({
-          ...data,
-          image: data.image[0],
-          latlng: {
-            lat: latitude,
-            lng: longitude,
-          },
-        });
-        console.log("Coordinates:", longitude, latitude);
       } else {
-        console.log("No results found");
+        alert("No se ha encontrado esta dirección.");
       }
     } catch (error) {
       console.error("Error during geocoding:", error);
@@ -158,8 +150,17 @@ export default function CreateMap() {
         </form>
       )}
 
-      {isSuccess && <div>Restaurante guardado - Ver restaurante</div>}
-      {isError && <p>Ups, algo salió mal - Volver</p>}
+      {isSuccess && (
+        <div>
+          Resturante guardado - <Link href="/map">Ver restaurante</Link>
+        </div>
+      )}
+
+      {isError && (
+        <div>
+          Ups, algo salió mal - <Link href="/map">Volver</Link>
+        </div>
+      )}
     </main>
   );
 }

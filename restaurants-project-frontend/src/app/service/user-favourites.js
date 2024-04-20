@@ -24,4 +24,14 @@ const deleteFavourite = async (userId, restaurantData) => {
   }
 };
 
-export { addFavourite, deleteFavourite };
+const getFavouriteRestaurants = async (userId) => {
+  try {
+    const { data } = await api.get(`/api/favourite/${userId}`);
+    return data;
+  } catch (error) {
+    console.error("Error fetching favourite restaurants:", error);
+    throw error;
+  }
+};
+
+export { addFavourite, deleteFavourite, getFavouriteRestaurants };

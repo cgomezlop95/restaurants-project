@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getRestaurantById, modifyRestaurant } from "@/app/service/restaurants";
 import mapboxgl from "mapbox-gl";
+import Link from "next/link";
 
 const access_token = (mapboxgl.accessToken =
   process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN);
 
 export default function ModifyMap({ params }) {
   const id = params.slug;
-  console.log("id", id);
 
   const {
     register,
@@ -26,13 +26,10 @@ export default function ModifyMap({ params }) {
     queryFn: () => getRestaurantById(id),
   });
 
-  console.log("data", current_data);
-
   const [imagePreview, setImagePreview] = useState();
 
   useEffect(() => {
     if (current_data?.image) {
-      console.log("current data image", current_data.image);
       setImagePreview(current_data.image);
       setValue("image", current_data.image);
     }
@@ -61,10 +58,6 @@ export default function ModifyMap({ params }) {
   const { mutate, isSuccess, isError } = useMutation({
     mutationKey: ["modify-details", id],
     mutationFn: (updated_data) => modifyRestaurant(id, updated_data),
-    onSuccess: () => {
-      console.log("mutation success");
-    },
-    onError: () => console.error(errors),
   });
 
   const onSubmit = async (data) => {
@@ -77,28 +70,18 @@ export default function ModifyMap({ params }) {
 
       if (geo_data.features && geo_data.features.length > 0) {
         const [longitude, latitude] = geo_data.features[0].geometry.coordinates;
+
         const updated_data = {
           ...data,
-          image: data.image[0],
-          // image: imagePreview,
+          ...(imagePreview !== current_data.image && { image: data.image[0] }),
           latlng: {
             lat: latitude,
             lng: longitude,
           },
         };
         mutate(updated_data);
-        console.log("updated data", updated_data);
-        console.log("final mutation data", {
-          ...data,
-          image: data.image[0],
-          latlng: {
-            lat: latitude,
-            lng: longitude,
-          },
-        });
-        console.log("Coordinates:", longitude, latitude);
       } else {
-        console.log("No results found");
+        alert("No se ha encontrado esta dirección.");
       }
     } catch (error) {
       console.error("Error during geocoding:", error);
@@ -111,7 +94,7 @@ export default function ModifyMap({ params }) {
 
   return (
     <main className="flex min-h-screen flex-row gap-10 p-10 items-end">
-      {!isSuccess && (
+      {!isSuccess && !isError && (
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-row mt-20 gap-3"
@@ -186,8 +169,17 @@ export default function ModifyMap({ params }) {
         </form>
       )}
 
-      {isSuccess && <div>Restaurante modificado - Ver restaurante</div>}
-      {isError && <p>Ups, algo salió mal - Volver</p>}
+      {isSuccess && (
+        <div>
+          Resturante modificado - <Link href="/map">Ver restaurante</Link>
+        </div>
+      )}
+
+      {isError && (
+        <div>
+          Ups, algo salió mal - <Link href="/map">Volver</Link>
+        </div>
+      )}
     </main>
   );
 }

@@ -20,8 +20,7 @@ export default function Login() {
     mutationKey: "login",
     mutationFn: postLogin,
     onSuccess: () => {
-      console.log("Entra en onSuccess");
-      router.push("/map/create");
+      router.push("/map");
     },
     onError: (error) => {
       console.error("Login error:", error);
@@ -30,7 +29,6 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     try {
-      console.log("data", data);
       mutate(data);
     } catch (error) {
       console.error("Error during onSubmit function:", error);

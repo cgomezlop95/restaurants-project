@@ -4,10 +4,12 @@ import { clearCookie } from "../service/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "../../app/hooks/useAuth";
 
 const DropdownMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  let auth = useAuth();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -17,7 +19,6 @@ const DropdownMenu = () => {
     mutationKey: "logout",
     mutationFn: clearCookie,
     onSuccess: () => {
-      console.log("Cookie has been cleared");
       router.push("/");
     },
     onError: (error) => {
@@ -29,7 +30,7 @@ const DropdownMenu = () => {
     <div className="relative inline-block text-right">
       <div>
         <button onClick={toggleMenu} className="flex flex-row">
-          Nombre usuario
+          Nombre usuario: {auth.currentUser.username}
           {isOpen ? (
             <img src="/arrow-up.svg" alt="Logo" className="w-[24px] h-[24px]" />
           ) : (
@@ -50,6 +51,9 @@ const DropdownMenu = () => {
             </li>
             <li>
               <Link href="/map/create">Añadir restaurante</Link>
+            </li>
+            <li>
+              <Link href="/map/favourites">Ver Favoritos</Link>
             </li>
             <hr></hr>
             <li>

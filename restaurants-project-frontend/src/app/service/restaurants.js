@@ -17,13 +17,6 @@ const postRestaurant = async ({
   image,
   latlng,
 }) => {
-  console.log("Received data:", {
-    name,
-    address,
-    cuisine_type,
-    image,
-    latlng,
-  });
   const { data } = await api.post(
     "/api/restaurant/create",
     {
@@ -47,7 +40,6 @@ const addReview = async (id, review_data) => {
     const { data } = await api.put(`/api/restaurant/update/review/${id}`, {
       review_data,
     });
-    console.log("Review added successfully:", data);
     return data;
   } catch (error) {
     console.error("Error adding review:", error);
@@ -59,18 +51,7 @@ const modifyRestaurant = async (
   id,
   { name, address, cuisine_type, image, latlng }
 ) => {
-  console.log("Starting modifyRestaurant function");
-  console.log("Received id:", id);
-  console.log("Received updated_data:", {
-    name,
-    address,
-    cuisine_type,
-    image,
-    latlng,
-  });
-
   try {
-    console.log("Preparing to send API request to update restaurant details");
     const { data } = await api.put(
       `/api/restaurant/update/details/${id}`,
       {
@@ -87,7 +68,6 @@ const modifyRestaurant = async (
       }
     );
 
-    console.log("Restaurant modified successfully:", data);
     return data;
   } catch (error) {
     console.error("API request failed, error modifying restaurant:", error);
@@ -98,7 +78,6 @@ const modifyRestaurant = async (
 const deleteRestaurant = async (id) => {
   try {
     const response = await api.delete(`/api/restaurant/delete/${id}`);
-    console.log("Restaurant deleted");
     return response.data;
   } catch (error) {
     console.error("Error deleting restaurant:", error);

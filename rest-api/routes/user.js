@@ -19,7 +19,6 @@ router.get("/", (req, res) => {
 router.get("/logout", (req, res) => {
   try {
     res.clearCookie("token", cookieSettings).send("Cookie is cleared");
-    console.log("User logged out successfully");
   } catch (error) {
     console.error("Error during logout:", error);
     res.status(500).send("Internal Server Error");
@@ -31,7 +30,6 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     try {
-      console.log("Authenticated user:", req.user);
       res.json({ user: req.user });
     } catch (error) {
       console.error("Error when trying to fetch authenticated user:", error);

@@ -9,50 +9,61 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { addFavourite, deleteFavourite } from "@/app/service/user-favourites";
 import { useAuth } from "@/app/hooks/useAuth";
+import { queryClient } from "../../../app/context/ReactQueryClientProvider";
 
 export default function Page({ params }) {
   const id = params.slug;
-  console.log("id", id);
   const router = useRouter();
 
   let auth = useAuth();
-  console.log("auth current user", auth.currentUser.id);
   const userId = auth.currentUser.id;
-  console.log("userId", userId);
 
   const { data, isLoading } = useQuery({
     queryKey: ["restaurant", id],
     queryFn: () => getRestaurantById(id),
   });
 
-  const {
-    mutate: deleteMutation,
-    isSuccess,
-    isError,
-  } = useMutation({
+  const { mutate: deleteMutation } = useMutation({
     mutationKey: ["delete-restaurant", id],
     mutationFn: () => deleteRestaurant(id),
     onSuccess: () => {
-      console.log("mutation on success");
+      alert("Restaurante eliminado");
       router.push("/map");
     },
     onError: (error) => {
       console.error("mutation on error:", error);
+      alert("Ha habido un error al eliminar el restaurante");
+      router.push("/map");
     },
   });
 
-  const { mutate: addFavoriteMutation } = useMutation({
-    mutationKey: ["favourite", userId],
-    mutationFn: (data) => addFavourite(userId, data),
+  const { mutate: addFavouriteMutation } = useMutation({
+    mutationKey: ["add-favourite", id],
+    mutationFn: () => addFavourite(userId, data),
     onSuccess: () => {
-      console.log("mutation on success");
+      queryClient.invalidateQueries(["currentUser"]);
+      alert("Añadido a Mis Favoritos");
+      router.push("/map/favourites");
     },
     onError: (error) => {
-      console.error("mutation on error:", error);
+      alert("No se pudo añadir a favoritos");
+      console.error("Add favourite mutation error:", error);
     },
   });
 
-  console.log("data", data);
+  const { mutate: deleteFavouriteMutation } = useMutation({
+    mutationKey: ["delete-favourite", id],
+    mutationFn: () => deleteFavourite(userId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["currentUser"]);
+      alert("Eliminado de Mis Favoritos");
+      router.push("/map/favourites");
+    },
+    onError: (error) => {
+      alert("No se pudo eliminar de favoritos");
+      console.error("Delete favourite mutation error:", error);
+    },
+  });
 
   if (isLoading) {
     return <p>Loading</p>;
@@ -87,6 +98,7 @@ export default function Page({ params }) {
                 defaultValue={review.rating}
                 icon={<BlueIcon fontSize="inherit" />}
                 emptyIcon={<EmptyIcon fontSize="inherit" />}
+                readOnly
               />
             </div>
           );
@@ -96,12 +108,9 @@ export default function Page({ params }) {
       <div>
         <Link href={`/map/${id}/modify`}>Editar</Link>
         <button onClick={deleteMutation}>Eliminar</button>
-
-        <button onClick={() => addFavourite(userId, data)}>
-          Añadir a Mis Favoritos
-        </button>
-        <button onClick={() => deleteFavourite(userId, data)}>
-          Eliminar de mis Favoritos
+        <button onClick={addFavouriteMutation}>Añadir a Mis Favoritos</button>
+        <button onClick={deleteFavouriteMutation}>
+          Eliminar de Mis Favoritos
         </button>
       </div>
     </div>

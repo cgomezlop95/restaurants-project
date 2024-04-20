@@ -51,8 +51,6 @@ router.post("/create", upload.single("image"), async (req, res) => {
     let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
     const cldRes = await handleUpload(dataURI);
 
-    console.log("req.file", req.file);
-
     const restaurant_data = {
       name: req.body.name,
       id: newId,
@@ -109,21 +107,23 @@ router.put("/update/details/:id", upload.single("image"), async (req, res) => {
     const data = await fs.readFile("./data/restaurants.json", "utf8");
     const restaurants = JSON.parse(data);
     const restaurant_id = parseInt(req.params.id, 10);
-    console.log("req.body", req.body);
-    console.log("req.file", req.file);
-    const b64 = Buffer.from(req.file.buffer).toString("base64");
-    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
-    const cldRes = await handleUpload(dataURI);
+
+    let cldRes;
+
+    if (req.file) {
+      const b64 = Buffer.from(req.file.buffer).toString("base64");
+      let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+      cldRes = await handleUpload(dataURI);
+    }
 
     const updated_restaurants = restaurants.map((restaurant) => {
       if (restaurant.id === restaurant_id) {
-        console.log("entra en la modificación");
         return {
           ...restaurant,
           name: req.body.name,
           address: req.body.address,
           cuisine_type: req.body.cuisine_type,
-          image: cldRes.secure_url || "url pending",
+          image: cldRes ? cldRes.secure_url : restaurant.image,
           latlng: req.body.latlng,
         };
       }

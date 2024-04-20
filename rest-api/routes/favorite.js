@@ -2,6 +2,20 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs").promises;
 
+router.get("/:id/favourite", async (req, res) => {
+  try {
+    const data = await fs.readFile("./data/users.json", "utf8");
+    const users = JSON.parse(data);
+    const userId = parseInt(req.params.id, 10);
+    const user = users.find((user) => user.id === userId);
+
+    res.json(user.favourite_restaurants);
+  } catch (error) {
+    console.error("Error updating user favourite restaurants:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.put("/:id/mark", async (req, res) => {
   try {
     const data = await fs.readFile("./data/users.json", "utf8");

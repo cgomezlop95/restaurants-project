@@ -22,14 +22,12 @@ export default function SignIn() {
     mutationKey: "signin",
     mutationFn: postRegister,
     onSuccess: () => {
-      console.log("mutation success");
       router.push("/login");
     },
   });
 
   const onSubmit = async (data) => {
     try {
-      console.log("data", data);
       mutate(data);
     } catch (error) {
       console.error("Error during onSubmit function:", error);
@@ -38,15 +36,15 @@ export default function SignIn() {
 
   const handleButton = () => {
     if (step === 1) {
-      console.log("go to step 2");
       setStep(2);
     }
   };
 
   const handleBack = () => {
     if (step === 2) {
-      console.log("back to step 1");
       setStep(1);
+    } else {
+      router.push("/");
     }
   };
 
