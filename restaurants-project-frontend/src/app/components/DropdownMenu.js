@@ -44,8 +44,8 @@ const DropdownMenu = () => {
       </div>
 
       {isOpen && (
-        <div className="w-48 rounded-md bg-[#264BEB] text-white ">
-          <ul className="m-6">
+        <div className="absolute right-0 w-48 rounded-md bg-[#264BEB] text-white m-1">
+          <ul className="p-3">
             <li>
               <Link href="/map">Panel de control</Link>
             </li>
@@ -55,9 +55,12 @@ const DropdownMenu = () => {
             <li>
               <Link href="/map/favourites">Ver Favoritos</Link>
             </li>
-            <hr></hr>
+            <hr className="m-1"></hr>
             <li>
-              <button className="border-white " onClick={mutate}>
+              <button
+                className="border border-white px-4 py-2 rounded font-bold w-[132px] text-center m-4"
+                onClick={mutate}
+              >
                 Cerrar sesión
               </button>
             </li>

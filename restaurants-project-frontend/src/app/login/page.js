@@ -5,21 +5,17 @@ import { useForm } from "react-hook-form";
 import { postLogin } from "../service/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { queryClient } from "../context/ReactQueryClientProvider";
 
 export default function Login() {
   const router = useRouter();
-  const {
-    control,
-    resetField,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const { mutate } = useMutation({
     mutationKey: "login",
     mutationFn: postLogin,
     onSuccess: () => {
+      queryClient.invalidateQueries(["currentUser"]);
       router.push("/map");
     },
     onError: (error) => {
@@ -38,8 +34,14 @@ export default function Login() {
   return (
     <main className="flex min-h-screen flex-row gap-10 p-10 items-end">
       <div className="flex-1 bg-[#264BEB] text-white rounded-lg p-4">
-        <img src="/white-logo.svg" alt="Logo" className="w-[194px] h-[44px]" />
-        <Link href="/signin">¿No tienes una cuenta? Regístrate</Link>
+        <img
+          src="/white-logo.svg"
+          alt="Logo"
+          className="w-[194px] h-[44px] mb-5"
+        />
+        <Link href="/signin" className="hover:font-bold">
+          ¿No tienes una cuenta? Regístrate
+        </Link>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -50,7 +52,7 @@ export default function Login() {
             type="email"
             placeholder="Escribe tu email"
             {...register("email")}
-            className="border-white border-2 rounded px-3 py-2 bg-[#264BEB] text-white"
+            className="border-white border-2 rounded px-3 py-2 bg-[#264BEB] text-white placeholder-white w-[350px]"
           />
 
           <label className="font-bold">Contraseña</label>
@@ -58,12 +60,12 @@ export default function Login() {
             type="password"
             placeholder="Escribe tu contraseña"
             {...register("password")}
-            className="border-white border-2 rounded px-3 py-2 bg-[#264BEB] text-white"
+            className="border-white border-2 rounded px-3 py-2 bg-[#264BEB] text-white placeholder-white w-[350px]"
           />
 
           <button
             type="submit"
-            className="border-white border-2 bg-transparent py-2 px-4 rounded text-left w-40"
+            className="border-white border-2 bg-transparent py-2 px-4 rounded text-left w-[103px]"
           >
             Entrar
           </button>

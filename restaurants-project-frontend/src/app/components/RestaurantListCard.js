@@ -1,6 +1,6 @@
 const RestaurantListCard = ({ name, address, image, comments }) => {
   return (
-    <div className="flex flex-row h-[200px] gap-2 m-4">
+    <div className="flex flex-row h-[200px] gap-4 m-6">
       <div
         className="w-[200px] h-[200px] bg-cover bg-center"
         style={{
@@ -9,11 +9,13 @@ const RestaurantListCard = ({ name, address, image, comments }) => {
         }}
       ></div>
 
-      <div className="h-[200px] flex flex-col">
-        <p>Nombre: {name}</p>
-        <p>Dirección: {address}</p>
+      <div className="h-[200px] flex flex-col justify-between gap-5">
+        <div className="flex flex-col gap-5">
+          <p className="font-bold text-lg">{name}</p>
+          <p className="text-sm">{address}</p>
+        </div>
 
-        <div className="flex">
+        <div className="flex mb-5">
           <img
             src="/five-stars.svg"
             alt="Logo"

@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getRestaurantById, modifyRestaurant } from "@/app/service/restaurants";
 import mapboxgl from "mapbox-gl";
 import Link from "next/link";
+import CircularIndeterminate from "../../../components/CircularIndeterminate";
 
 const access_token = (mapboxgl.accessToken =
   process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN);
@@ -89,7 +90,7 @@ export default function ModifyMap({ params }) {
   };
 
   if (isLoading) {
-    return <p>Loading</p>;
+    return <CircularIndeterminate />;
   }
 
   return (

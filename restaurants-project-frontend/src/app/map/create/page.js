@@ -12,7 +12,6 @@ const access_token = (mapboxgl.accessToken =
 export default function CreateMap() {
   const {
     register,
-    control,
     resetField,
     handleSubmit,
     setValue,
@@ -73,14 +72,19 @@ export default function CreateMap() {
   };
 
   return (
-    <main className="flex min-h-screen flex-row gap-10 p-10 items-end">
+    <main className="flex flex-col items-center justify-center min-h-screen gap-10 p-10">
+      <img
+        src="/blue-logo-icon.svg"
+        alt="Logo"
+        className="w-[43.85px] h-[40px]"
+      />
       {!isSuccess && (
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-row mt-20 gap-3"
           encType="multipart/form-data"
         >
-          <div className="relative border border-black rounded p-3">
+          <div className="flex-1 relative border border-black rounded p-3">
             {imagePreview ? (
               <>
                 <img
@@ -91,7 +95,7 @@ export default function CreateMap() {
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="mt-2 bg-red-500 text-white py-2 px-4 rounded"
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-white text-white py-2 px-4 rounded"
                 >
                   Eliminar
                 </button>
@@ -100,6 +104,7 @@ export default function CreateMap() {
               <button
                 type="button"
                 onClick={() => document.getElementById("imageInput").click()}
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 py-2 px-4 rounded"
               >
                 Añadir imagen
               </button>
@@ -114,35 +119,33 @@ export default function CreateMap() {
             />
           </div>
 
-          <div className="flex-1 flex flex-col">
-            <div>
-              <label className="font-bold">Nombre de restaurante:</label>
-              <input
-                type="text"
-                placeholder="Nombre del restaurante"
-                {...register("name")}
-                className="border-white border-2 rounded px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="font-bold">Dirección de restaurante:</label>
-              <input
-                type="text"
-                placeholder="Dirección"
-                {...register("address")}
-                className="border-white border-2 rounded px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="font-bold">Descripción del restaurante:</label>
-              <textarea
-                {...register("cuisine_type")}
-                placeholder="Escribe información acerca del restaurante"
-              />
-            </div>
+          <div className="flex-1 flex flex-col gap-4">
+            <label className="font-bold">Nombre de restaurante:</label>
+            <input
+              type="text"
+              placeholder="Nombre del restaurante"
+              {...register("name")}
+              className="border border-black placeholder-black rounded px-3 py-2"
+            />
+
+            <label className="font-bold">Dirección de restaurante:</label>
+            <input
+              type="text"
+              placeholder="Dirección"
+              {...register("address")}
+              className="border border-black placeholder-black rounded px-3 py-2"
+            />
+
+            <label className="font-bold">Descripción del restaurante:</label>
+            <textarea
+              {...register("cuisine_type")}
+              placeholder="Escribe información acerca del restaurante"
+              className="border border-black placeholder-black rounded px-3 py-2"
+            />
+
             <button
               type="submit"
-              className="border-white border-2 bg-transparent py-2 px-4 rounded text-left w-40"
+              className="border border-black bg-transparent py-2 px-4 rounded text-center w-[154px]"
             >
               Guardar
             </button>
@@ -151,16 +154,29 @@ export default function CreateMap() {
       )}
 
       {isSuccess && (
-        <div>
-          Resturante guardado - <Link href="/map">Ver restaurante</Link>
+        <div className="flex flex-col gap-5">
+          <p className="font-bold text-[#264BEB]">Restaurante guardado</p>
+          <Link
+            href="/map"
+            className="border border-black px-4 py-2 rounded font-bold text-center"
+          >
+            Ver restaurante
+          </Link>
         </div>
       )}
 
       {isError && (
-        <div>
-          Ups, algo salió mal - <Link href="/map">Volver</Link>
+        <div className="flex flex-col gap-5">
+          <p className="font-bold text-[#264BEB]">Ups, algo salió mal</p>
+          <Link
+            href="/map"
+            className="border border-black px-4 py-2 rounded font-bold text-center"
+          >
+            Volver
+          </Link>
         </div>
       )}
+      <img src="/blue-logo-icon.svg" alt="Logo" className="w-[43px] h-[40px]" />
     </main>
   );
 }

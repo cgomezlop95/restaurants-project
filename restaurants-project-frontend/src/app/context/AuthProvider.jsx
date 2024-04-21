@@ -3,6 +3,7 @@
 import { createContext } from "react";
 import { isUserLoggedIn } from "../service/auth";
 import { useQuery } from "@tanstack/react-query";
+import CircularIndeterminate from "../components/CircularIndeterminate";
 
 export const AuthContext = createContext();
 
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   });
 
   if (isLoading) {
-    return <p>Loading</p>;
+    return <CircularIndeterminate />;
   }
 
   return (

@@ -68,10 +68,10 @@ const ReviewForm = ({ id }) => {
   };
 
   return (
-    <div className="border-1 border-black ">
+    <div className="border border-black m-10">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col mt-20 gap-3"
+        className="flex flex-col m-3 gap-3"
       >
         <Rating
           name="rating"
@@ -88,9 +88,12 @@ const ReviewForm = ({ id }) => {
         <textarea
           {...register("comments", { required: true })}
           placeholder="Escribe tu comentario sobre el restaurante"
+          className="w-full h-32 p-2 placeholder-black"
         />
 
-        <button type="submit">Enviar</button>
+        <button type="submit" className="border border-black p-4 rounded-lg">
+          Enviar
+        </button>
       </form>
     </div>
   );
