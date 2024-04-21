@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const BlueIcon = ({ width = 24, height = 24 }) => {
   return (

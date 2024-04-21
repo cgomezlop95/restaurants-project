@@ -4,7 +4,8 @@ This repository contains the code for a restaurant project website, including bo
 
 ## Deploy on Vercel
 
-The application is currently deployed on Vercel.
+The application is currently deployed on Vercel on the following URL:
+`https://restaurants-project-map.vercel.app/`
 
 [Visit Live Application](https://restaurants-project-map.vercel.app/)
 
@@ -15,7 +16,7 @@ To run the API locally, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone <repository_url>
+   git clone git@github.com:cgomezlop95/restaurants-project.git
    ```
 
 2. Navigate to the API directory:
@@ -44,7 +45,7 @@ To run the frontend locally, follow these steps:
 1. Clone the repository (if not already done):
 
    ```bash
-   git clone <repository_url>
+   git clone git@github.com:cgomezlop95/restaurants-project.git
    ```
 
 2. Navigate to the frontend directory:
@@ -65,3 +66,10 @@ To run the frontend locally, follow these steps:
    ```
 
 Now you should be able to access the frontend by navigating to `http://localhost:3000` in your web browser.
+
+## Features
+
+- Users can log in and sign up.
+- Users can add, modify, and delete restaurants.
+- Users can post reviews.
+- Users can mark and unmark their favorite restaurants.

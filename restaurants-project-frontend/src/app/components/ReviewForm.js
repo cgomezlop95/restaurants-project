@@ -68,7 +68,7 @@ const ReviewForm = ({ id }) => {
   };
 
   return (
-    <div className="border border-black m-10">
+    <div className="border border-black m-5 rounded-lg">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col m-3 gap-3"

@@ -71,7 +71,7 @@ export default function Page({ params }) {
   }
 
   return (
-    <main className="flex min-h-screen flex-row gap-10 p-10">
+    <main className="min-h-screen gap-10 p-10">
       <div className="flex flex-col m-8 gap-8">
         <div
           className="bg-cover bg-center h-[600px] flex items-center justify-center rounded"
@@ -83,7 +83,7 @@ export default function Page({ params }) {
           </div>
         </div>
 
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-row justify-around">
           <div className="flex flex-col gap-4">
             <p>{data.cuisine_type}</p>
 

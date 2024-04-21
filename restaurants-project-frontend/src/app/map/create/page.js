@@ -125,7 +125,7 @@ export default function CreateMap() {
               type="text"
               placeholder="Nombre del restaurante"
               {...register("name")}
-              className="border border-black placeholder-black rounded px-3 py-2"
+              className="border border-black placeholder-black rounded px-3 py-2 w-[400px]"
             />
 
             <label className="font-bold">Dirección de restaurante:</label>
@@ -133,19 +133,19 @@ export default function CreateMap() {
               type="text"
               placeholder="Dirección"
               {...register("address")}
-              className="border border-black placeholder-black rounded px-3 py-2"
+              className="border border-black placeholder-black rounded px-3 py-2 w-[400px]"
             />
 
             <label className="font-bold">Descripción del restaurante:</label>
             <textarea
               {...register("cuisine_type")}
               placeholder="Escribe información acerca del restaurante"
-              className="border border-black placeholder-black rounded px-3 py-2"
+              className="border border-black placeholder-black rounded px-3 py-2 w-[400px]"
             />
 
             <button
               type="submit"
-              className="border border-black bg-transparent py-2 px-4 rounded text-center w-[154px]"
+              className="border border-black bg-transparent py-2 px-4 rounded text-center w-[154px] font-bold"
             >
               Guardar
             </button>

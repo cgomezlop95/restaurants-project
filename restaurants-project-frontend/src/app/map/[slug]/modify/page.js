@@ -106,7 +106,7 @@ export default function ModifyMap({ params }) {
           className="flex flex-row mt-20 gap-3"
           encType="multipart/form-data"
         >
-          <div className="relative border border-black rounded p-3">
+          <div className="flex-1 relative border border-black rounded p-3">
             {imagePreview ? (
               <>
                 <img
@@ -146,7 +146,7 @@ export default function ModifyMap({ params }) {
               type="text"
               defaultValue={current_data.name}
               {...register("name")}
-              className="border border-black placeholder-black rounded px-3 py-2"
+              className="border border-black placeholder-black rounded px-3 py-2 w-[400px]"
             />
 
             <label className="font-bold">Dirección de restaurante:</label>
@@ -154,19 +154,19 @@ export default function ModifyMap({ params }) {
               type="text"
               defaultValue={current_data.address}
               {...register("address")}
-              className="border border-black placeholder-black rounded px-3 py-2"
+              className="border border-black placeholder-black rounded px-3 py-2 w-[400px]"
             />
 
             <label className="font-bold">Descripción del restaurante:</label>
             <textarea
               {...register("cuisine_type")}
               defaultValue={current_data.cuisine_type}
-              className="border border-black placeholder-black rounded px-3 py-2"
+              className="border border-black placeholder-black rounded px-3 py-2 w-[400px]"
             />
 
             <button
               type="submit"
-              className="border border-black bg-transparent py-2 px-4 rounded text-center w-[154px]"
+              className="border border-black bg-transparent py-2 px-4 rounded text-center w-[154px] font-bold"
             >
               Modificar
             </button>
