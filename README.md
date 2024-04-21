@@ -1,8 +1,14 @@
-# Restaurant Project
+# Restaurant Interactive Map Project
 
 This repository contains the code for a restaurant project website, including both the API and the frontend.
 
-## Running the API
+## Deploy on Vercel
+
+The application is currently deployed on Vercel.
+
+[Visit Live Application](https://restaurants-project-map.vercel.app/)
+
+## Running the API locally
 
 To run the API locally, follow these steps:
 
@@ -31,7 +37,7 @@ To run the API locally, follow these steps:
 
 Now you should be able to access the API by navigating to `http://localhost:5000` in your web browser.
 
-## Running the Frontend
+## Running the Frontend locally
 
 To run the frontend locally, follow these steps:
 

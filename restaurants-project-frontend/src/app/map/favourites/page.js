@@ -35,6 +35,7 @@ export default function FavouriteMap() {
     <main className="flex min-h-screen flex-row gap-10 p-10">
       <div id="map" className="flex-1 border rounded-lg h-[942px]"></div>
       <div className="flex-1">
+        <h1 className="text-center font-bold m-4 text-lg">Mis Favoritos</h1>
         <ul>
           {auth.currentUser.favourite_restaurants.map((el) => (
             <li key={el.id}>
